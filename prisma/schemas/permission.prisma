@@ -1,0 +1,28 @@
+enum Action {
+  create
+  read
+  update
+  delete
+  manage
+}
+
+model Permission {
+  id              Int                @id @default(autoincrement())
+  action          Action
+  subject         String // e.g., 'User', 'Post', 'all'
+  fields          String? // Optional: JSON string or Array<string> of fields, e.g., '["title", "content"]'
+  conditions      String? // Optional: JSON string representing CASL conditions (e.g., '{ "authorId": { "$eq": "user.id" } }')
+  rolePermissions RoleToPermission[] // Many-to-many relationship with Role
+}
+
+model RoleToPermission {
+  roleId       Int
+  permissionId Int
+
+  role       Role       @relation(fields: [roleId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
+
+  @@id([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+}

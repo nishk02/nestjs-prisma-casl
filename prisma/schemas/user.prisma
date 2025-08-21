@@ -1,0 +1,23 @@
+model User {
+  id             Int          @id @default(autoincrement())
+  uuid           String       @unique @default(uuid())
+  username       String?      @unique
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  email          String       @unique
+  password       String
+  firstName      String?
+  lastName       String?
+  fullName       String?
+  phone          String?
+  address        String?
+  city           String?
+  state          String?
+  country        String?
+  zipCode        String?
+  birthDate      DateTime?
+  profilePicture String?
+  emailVerified  Boolean      @default(false)
+  userRoles      UserToRole[]
+  posts          Post[]
+}

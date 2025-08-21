@@ -1,0 +1,24 @@
+enum UserRole {
+    USER
+    ADMIN
+    GUEST
+}
+
+model Role {
+    id              Int                @id @default(autoincrement())
+    name            UserRole           @unique
+    roleUsers       UserToRole[]
+    rolePermissions RoleToPermission[]
+}
+
+model UserToRole {
+    userId Int
+    roleId Int
+
+    user User @relation(fields: [userId], references: [id])
+    role Role @relation(fields: [roleId], references: [id])
+
+    @@id([userId, roleId]) // Composite primary key for uniqueness
+    @@index([userId]) // Index for faster lookups by user
+    @@index([roleId]) // Index for faster lookups by role
+}
